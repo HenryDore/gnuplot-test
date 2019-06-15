@@ -5,7 +5,7 @@
 using namespace std;
 
 
-#ifdef _WIN32
+#ifdef _WIN32			//fine whatever windows you dickhead
     #include <windows.h>
 
     void sleep(unsigned milliseconds)
