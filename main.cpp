@@ -2,7 +2,6 @@
 #include <vector>
 #include "graph.h"
 #include <math.h>
-using namespace std;
 
 #ifdef _WIN32 // fine whatever windows you dickhead
 #include <windows.h>
@@ -16,45 +15,52 @@ void sleep(unsigned milliseconds) {
 }
 #endif
 
-int main(int argc, char **argv) {
+using namespace std;
+
+int begin(int offset, int peakToPeak, int windowSize, int readingSize, int iterations, int delay) {
   vector<float> x, y, xWindow, yWindow;
   plot p;
-  x.reserve(100);
-  y.reserve(100);
-  xWindow.reserve(500);
-  yWindow.reserve(500);
+  x.reserve(readingSize);
+  y.reserve(readingSize);
+  xWindow.reserve(windowSize*readingSize);
+  yWindow.reserve(windowSize*readingSize);
 
   bool initialised = 0;
-  for (int a = 0; a < 100; a++) {
+  for (int a = 0 ; a < iterations ; a++) {
     x.clear();
     y.clear();
 
-    for (float j = 0; j < 100; j++) {
-      x.push_back(a + j / 100);
-      y.push_back((100 * sin(a + j / 100)) + 100);
+    for (float j = 0; j < readingSize; j++) {
+      x.push_back(a + j / readingSize);
+      y.push_back((peakToPeak * sin(a + j / readingSize)) + offset);
     }
 
-    if (a == 5)
+    if (a == windowSize)
       initialised = 1;
 
     xWindow.insert(xWindow.end(), x.begin(), x.end());
     yWindow.insert(yWindow.end(), y.begin(), y.end());
 
     if (initialised) {
-      xWindow.erase(xWindow.begin(), xWindow.begin() + 100);
-      yWindow.erase(yWindow.begin(), yWindow.begin() + 100);
-      xWindow.resize(500);
-      yWindow.resize(500);
+      xWindow.erase(xWindow.begin(), xWindow.begin() + readingSize);
+      yWindow.erase(yWindow.begin(), yWindow.begin() + readingSize);
     }
 
     p.plot_data(xWindow, yWindow);
-    sleep(1);
+    sleep(delay);
   }
+  return 0;
+}
 
-  /*
-          for (unsigned int i = 0 ; i < 500 ; i++) {
-                  cout << xWindow[i] << ", " << yWindow[i] << endl;
-          }
-  */
+int main(int argc, char **argv) {
+  int offset = 1000;
+  int peakToPeak = 1000;
+  int windowSize = 10;
+  int readingSize = 50;
+  int iterations = 50;
+  int delay = 0;
+
+  begin(offset, peakToPeak, windowSize, readingSize, iterations, delay);
+
   return 0;
 }
