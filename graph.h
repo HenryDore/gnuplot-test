@@ -16,7 +16,7 @@ public:
  persist=_persist;
   if (enabled) {
 	if(persist)
-		  gp=popen("gnuplot -persist","w");
+		  gp=popen("gnuplot -persist -geometry 20X20 ","w");
 	else
 		  gp=popen("gnuplot","w");
   }
