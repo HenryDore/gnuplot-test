@@ -3,13 +3,13 @@
 #include "graph.h"
 #include <math.h>
 
-#ifdef _WIN32 // fine whatever windows you dickhead
+#ifdef _WIN64 // fine whatever windows you dickhead
 #include <windows.h>
 
 void sleepytime(unsigned milliseconds) { Sleep(milliseconds); }
-#endif
 
-#ifdef __GNUC__
+
+#else
 #include <unistd.h>
 void sleepytime(unsigned milliseconds) {
   usleep(milliseconds * 1000); // takes microseconds
@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
   int offset = 1000;
   int peakToPeak = 1000;
   int windowSize = 10;
-  int readingSize = 50;
+  int readingSize = 1000;
   int iterations = 50;
   int delay = 0;
 
