@@ -6,11 +6,12 @@
 #ifdef _WIN32 // fine whatever windows you dickhead
 #include <windows.h>
 
-void sleep(unsigned milliseconds) { Sleep(milliseconds); }
-#else
-#include <unistd.h>
+void sleepytime(unsigned milliseconds) { Sleep(milliseconds); }
+#endif
 
-void sleep(unsigned milliseconds) {
+#ifdef __GNUC__
+#include <unistd.h>
+void sleepytime(unsigned milliseconds) {
   usleep(milliseconds * 1000); // takes microseconds
 }
 #endif
@@ -47,7 +48,7 @@ int begin(int offset, int peakToPeak, int windowSize, int readingSize, int itera
     }
 
     p.plot_data(xWindow, yWindow);
-    sleep(delay);
+    sleepytime(delay);
   }
   return 0;
 }
